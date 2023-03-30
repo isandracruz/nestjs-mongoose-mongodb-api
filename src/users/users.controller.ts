@@ -3,6 +3,7 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { QueryDto } from './dto/query-dto';
+import { ApiQuery } from '@nestjs/swagger';
 
 @Controller('users')
 export class UsersController {
@@ -24,7 +25,21 @@ export class UsersController {
   }  
 
   @Get('/find-by-date')
-  findByDate(@Param('id') id: string, @Query() range: QueryDto) {
+  @ApiQuery({
+    name: 'dateStart',
+    required: true,
+    type: String,
+    description: 'The start of the date range',
+    example: '2023-03-1',
+  })
+  @ApiQuery({
+    name: 'dateEnd',
+    required: true,
+    type: String,
+    description: 'The end of the date range',
+    example: '2023-03-30',
+  })
+  findByDate(@Query() range: QueryDto) {
     return this.usersService.findByDate(range);
   }  
 
